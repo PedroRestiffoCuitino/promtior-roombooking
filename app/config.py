@@ -1,17 +1,15 @@
 from datetime import time
 
-ROOMS = [
-    {"name": "A", "capacity": 4},
-    {"name": "B", "capacity": 6},
-    {"name": "C", "capacity": 8},
-    {"name": "D", "capacity": 12},
-    {"name": "E", "capacity": 20},
-]
+ROOM_CAPACITIES = {
+    "A": 4,
+    "B": 6,
+    "C": 8,
+    "D": 12,
+    "E": 20,
+}
 
-ROOMS_BY_NAME = {r["name"]: r for r in ROOMS}
-
-OFFICE_OPEN = time(8, 0)
-OFFICE_CLOSE = time(20, 0)
+OFFICE_OPEN = "08:00"
+OFFICE_CLOSE = "20:00"
 
 SLOT_MINUTES = 30
-MAX_DURATION_MINUTES = 180
+MAX_BOOKING_MINUTES = 180

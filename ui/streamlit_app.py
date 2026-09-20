@@ -5,6 +5,12 @@ Requires the GROQ_API_KEY environment variable.
 """
 
 import os
+import sys
+from pathlib import Path
+
+# Make the project root importable so `from app... import` works
+# no matter where streamlit is launched from.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import streamlit as st
 
