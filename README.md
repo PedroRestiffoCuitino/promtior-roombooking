@@ -7,7 +7,7 @@ book meeting rooms through a conversational interface.
 
 | Layer | Technology |
 |---|---|
-| LLM (free API, no credit card) | **Groq** — Llama 3.3 70B via `langchain-groq` |
+| LLM (free API, no credit card) | **Groq** â€” `openai/gpt-oss-120b` via `langchain-groq` (configurable with `GROQ_MODEL`) |
 | Agent framework | **LangGraph** `create_react_agent` (tool-calling) |
 | Booking system | Pure Python domain core + SQLite |
 | REST API | **FastAPI** (JWT auth) |
@@ -22,6 +22,10 @@ pip install -r requirements.txt
 
 export GROQ_API_KEY="gsk_..."        # free key: https://console.groq.com
 export JWT_SECRET="some-random-secret"   # optional, dev default exists
+
+# 1. Create your local .env from the template and paste your Groq key
+cp .env.example .env
+# (Windows: copy .env.example .env, then edit .env)
 
 # Option A: conversational UI
 streamlit run ui/streamlit_app.py

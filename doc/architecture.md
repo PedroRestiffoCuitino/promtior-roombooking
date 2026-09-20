@@ -32,7 +32,7 @@ language/reasoning layer on top of a deterministic, testable system of record.
    every operation so the system is usable programmatically too.
 4. **Tools + agent**: wrapped the core operations as LangChain tools (with docstrings
    the model reads to pick arguments), then built a ReAct agent with LangGraph on top of
-   **Groq's free API** (Llama 3.3 70B). The system prompt carries the rules, room
+   **Groq's free API** (`openai/gpt-oss-120b`, configurable via `GROQ_MODEL`)
    capacities and *today's date*, and instructs the agent to ask for missing data and
    confirm before booking.
 5. **UI**: Streamlit chat with login, conversation memory and a "my bookings" sidebar.
@@ -48,7 +48,7 @@ language/reasoning layer on top of a deterministic, testable system of record.
 | Office hours | 08:00–20:00 | Not specified in the PDF; needed to bound "past slot" validation. |
 | Past bookings | Forbidden | Standard for booking systems; keeps the demo consistent. |
 | Cancellations | Only your own bookings | Stated in the challenge ("cancel a booking made by the currently logged-in user"). |
-| LLM provider | Groq free tier (Llama 3.3 70B) via LangChain | No credit card required; OpenAI/Ollama/OpenRouter are drop-in alternatives (same LangChain interface). |
+| LLM provider | Groq free tier (`openai/gpt-oss-120b`) via LangChain | No credit card required; OpenAI/Ollama/OpenRouter are drop-in alternatives (same LangChain interface). |
 | Extra tool `list_my_bookings` | Added beyond the minimum | Needed to give users booking ids for cancellation in a conversation. |
 
 ## 4. Component diagram

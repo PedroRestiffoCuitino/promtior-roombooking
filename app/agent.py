@@ -1,8 +1,15 @@
 import os
+
+from pathlib import Path
+
+from dotenv import load_dotenv
+
 from langchain_groq import ChatGroq
 from langgraph.prebuilt import create_react_agent
 
 from app.config import ROOM_CAPACITIES
+
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 DEFAULT_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
