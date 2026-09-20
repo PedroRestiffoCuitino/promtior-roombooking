@@ -1,38 +1,47 @@
-"""LLM agent (tool-calling chatbot) built with LangGraph + Groq (free API)."""
-
-from __future__ import annotations
-
 import os
-from datetime import date
-
 from langchain_groq import ChatGroq
 from langgraph.prebuilt import create_react_agent
 
-from .booking_core import BookingSystem
-from .tools import build_tools
+from app.config import ROOMS
 
-SYSTEM_PROMPT = """You are a helpful assistant for the meeting-room booking system of the office "Cubo Itaú". You help employees book, inspect and cancel meeting rooms through the tools available to you.
+# Modelo disponible en Groq plan estándar (septiembre 2026)
+DEFAULT_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
-Rooms and capacities: A=4, B=6, C=8, D=12, E=20 people.
-Rules: 30-minute slots (times aligned to :00 or :30), max 3 hours per booking, no overlapping bookings in the same room, bookings only within office hours 08:00-20:00.
-Today's date: {today}.
+SYSTEM_PROMPT = f"""You are a helpful room-booking assistant for an office called Cubo Itaú.
 
-Guidelines:
-- If the user is missing information (room, date, time range, title or number of attendees), ask for it conversationally, one thing at a time.
-- Use list_available_rooms when the user has no specific room in mind or when the requested room is busy, to propose alternatives.
-- Use get_room_schedule to show a room's agenda.
-- Confirm the details with the user BEFORE calling create_booking.
-- Use list_my_bookings and cancel_booking for cancellations; never try to cancel another user's booking.
-- Keep answers short, clear and friendly. Format times as HH:MM and dates as YYYY-MM-DD."""
+Your job is to help users book meeting rooms through natural conversation.
+You have access to tools that interact with the booking system.
+
+Available rooms and capacities:
+{chr(10).join(f"- Room {r['name']}: max {r['capacity']} people" for r in ROOMS)}
+
+Booking rules:
+- Slots are 30 minutes, aligned to the hour or half-hour (e.g. 09:00, 09:30).
+- Maximum booking duration is 3 hours (6 contiguous slots).
+- A room can only have one booking per slot (no overlaps).
+- The user must provide: room, date/time range, title, and number of attendees.
+- If any information is missing, ask the user conversationally before calling the tool.
+- When listing rooms, mention capacity so the user can choose appropriately.
+- Office hours: 08:00 to 20:00.
+- Today is {__import__('datetime').date.today().isoformat()}.
+
+Always respond in the same language the user is using.
+"""
 
 
-def build_agent(system: BookingSystem, user: str):
-    """Build a fresh agent bound to a specific authenticated user."""
-    llm = ChatGroq(
-        model=os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile"),
-        api_key=os.getenv("GROQ_API_KEY"),
-        temperature=0,
-    )
+def build_agent(system, user):
+    """Build a ReAct agent bound to a specific user and booking system."""
+    from app.tools import build_tools
+
+    api_key = os.getenv("GROQ_API_KEY")
+    if not api_key:
+        raise RuntimeError("GROQ_API_KEY environment variable is not set")
+
     tools = build_tools(system, user)
-    return create_react_agent(llm, tools,
-                              prompt=SYSTEM_PROMPT.format(today=date.today()))
+
+    llm = ChatGroq(
+        api_key=api_key,
+        model=DEFAULT_MODEL,
+        temperature=0.2,
+    )
+    return create_react_agent(llm, tools, prompt=SYSTEM_PROMPT)
