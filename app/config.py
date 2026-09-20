@@ -1,19 +1,17 @@
-"""Central configuration: rooms, capacities and office hours."""
+from datetime import time
 
-# The office "Cubo Itaú" has five rooms (A–E).
-# NOTE: the challenge PDF requires "room-specific capacities" but does not
-# provide the numbers, so they are defined here (documented in /doc).
-ROOM_CAPACITIES = {
-    "A": 4,
-    "B": 6,
-    "C": 8,
-    "D": 12,
-    "E": 20,
-}
+ROOMS = [
+    {"name": "A", "capacity": 4},
+    {"name": "B", "capacity": 6},
+    {"name": "C", "capacity": 8},
+    {"name": "D", "capacity": 12},
+    {"name": "E", "capacity": 20},
+]
 
-# Office operating hours (bookings must fit entirely inside this window).
-OFFICE_OPEN = "08:00"
-OFFICE_CLOSE = "20:00"
+ROOMS_BY_NAME = {r["name"]: r for r in ROOMS}
 
-SLOT_MINUTES = 30          # bookings are made in 30-minute slots
-MAX_BOOKING_MINUTES = 180  # max 3 hours per appointment (contiguous slots)
+OFFICE_OPEN = time(8, 0)
+OFFICE_CLOSE = time(20, 0)
+
+SLOT_MINUTES = 30
+MAX_DURATION_MINUTES = 180
