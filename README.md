@@ -3,6 +3,18 @@
 Chatbot with **tool-calling capabilities** that lets employees of the Cubo Itaú office
 book meeting rooms through a conversational interface.
 
+
+## Live demo
+
+🚀 **Try it online:** https://promtior-roombooking.onrender.com
+
+- Username: `User1` or `User2`
+- Password: `TechnicalChallengePromtior`
+
+> ⚠️ The app runs on Render's free tier, so the first request after ~15 min of inactivity may take 30–60 s to wake up.
+
+
+
 ## Stack
 
 | Layer | Technology |
