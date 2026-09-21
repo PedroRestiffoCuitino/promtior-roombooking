@@ -83,6 +83,6 @@ doc/                # architecture overview + component diagram
 
 ## Documentation & notebook
 
-See [`doc/architecture.md`](doc/architecture.md) for the approach, key decisions and
+See [`doc/project-overview.md`](doc/project-overview.md) for the approach, key decisions and
 the component diagram, and [`notebook/challenge_notebook.ipynb`](notebook/challenge_notebook.ipynb)
 for a guided explanation of the technologies with runnable code.
